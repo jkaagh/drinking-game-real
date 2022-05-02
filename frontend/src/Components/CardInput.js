@@ -11,7 +11,7 @@ export default function CardInput(props) {
 
     
     useEffect(() => {
-        setInput(props.value)
+        setInput(props.data.prompt)
        
     }, [])
     
@@ -28,7 +28,7 @@ export default function CardInput(props) {
             setConfirm("deleting")
 
             //handle deletion from database here.
-            props.handleDelete(props.id)
+            props.handleDelete(props.data._id)
         }
         
     }

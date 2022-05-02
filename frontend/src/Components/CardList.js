@@ -1,8 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import CardInput from './CardInput'
 import { Navigate } from "react-router-dom"
+import { faAnglesRight, faArrowTurnDown } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import axios from 'axios'
+import { address } from '../serverAddress'
 
-export default function CardList() {
+export default function CardList(props) {
 
     const [inputField, setInputField]   = useState("")
     const [deck, setDeck]               = useState([])
@@ -11,112 +15,105 @@ export default function CardList() {
     
 
     useEffect(() => {
-        //check for existing list in localstorage and add to memory.
-        //later on fetch from server.
-        let list = localStorage.getItem("Deck")
+        //fetch cards from server
 
-        if(list === null){
-            setDeck([])
-        }
-        else{
-            setDeck(JSON.parse(list))
-        }
+        handleFetchCards()
 
     }, [])
     
     useEffect(() => {
         document.getElementById("scrollDiv").scrollTop = document.getElementById("scrollDiv").scrollHeight
 
-        console.log(plus(2))
+      
     }, [deck])
     
+    //fetches cards and renders list
+    const handleFetchCards = () => {
+       
+        
+        axios.get(address + "/card/fetch/"+ localStorage.getItem("selectedDeck"))
+        .then((response) => {
+            // console.log(response.data.data)
+          
+            // console.log(deck)
+            setDeck(response.data.data)
+        })
 
-
-
-
-    function plus(tal){
-        return tal*2
+        
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
     const handleSubmit = () => {
-        //add input field to list in memory
-        setDeck(deck => [...deck, inputField])
         
-        console.log([...deck, inputField])
+        axios.post(address + "/card/create/", {prompt:inputField, id:localStorage.getItem("selectedDeck")})
+        .then((response) => {
+            if(response.data.success == false){
+                alert("Error, card not added.")
+                return
+            }
+            handleFetchCards()
+            
+        })
+
         
-        //set to localstorage
-        localStorage.setItem("Deck", JSON.stringify([...deck, inputField]))
         
     }
 
     const handleDelete = (id) => {
-        //does server delete request.
 
-        //removes specific card from memory deck when deleted from server.
-        console.log(deck)
-        let newDeck
-        deck.forEach(card => {
-            //eventually find id in here and remove from array. for now just remove at index.
-        });
-       
         console.log(id)
-        newDeck = [...deck];
-        newDeck.splice(id, 1)
         
-        console.log(newDeck)
-
-        //save to localstorage
-        localStorage.setItem("Deck", JSON.stringify(newDeck))
-        
-        
-
-        //retarded workaround for a retarded framework
-        // setDeck(newDeck) //this would not be commented unless this stupid bug kept happening.
-        window.location.reload()
-
-        
+        axios.delete(address + "/card/delete/" + id)
+        .then((response) => {
+            if(response.data.success == false){
+                alert("Error, card not deleted.")
+                return
+            }
+            handleFetchCards()
+        })
+      
     }
 
     const handleStart = () => {
+
+        //generate and shuffle deck
+        let ShuffledDeck = []
+        deck.forEach(card => {
+            ShuffledDeck.push(card.prompt)
+        });
+        ShuffledDeck.sort(() => Math.random() - 0.5)
+        
+        //handle localstorage
+        localStorage.setItem("ingame", true)
+        localStorage.setItem("ShuffledDeck", JSON.stringify(ShuffledDeck))
+        localStorage.setItem("CardIndex", 0)
+
+        props.toGame()
+        return
+
         localStorage.setItem("CardIndex", 0)
         localStorage.setItem("ShuffledDeck", null)
-        let ShuffledDeck = [...deck].sort(() => Math.random() - 0.5)
+        let ShuffledDecsk = [...deck].sort(() => Math.random() - 0.5)
         console.log(ShuffledDeck)
         localStorage.setItem("ShuffledDeck", JSON.stringify(ShuffledDeck))
         setRedirect(true)
-        
-
 
     }
 
   return (
     <div className=' customHeight' >
         <div className=' shadow-md h-5/6  flex flex-col gap-2 p-2 overflow-scroll mt-4 ' id="scrollDiv">
+
             {
                 deck.map((card, index) => {
+                    console.log()
                     return(
-                        <>
+                        <div key={index}>
                             {/* eventually just replace id with server object id */}
-                            <CardInput key={index} value={card} id={index} handleDelete={handleDelete}/>
+                            <CardInput  data={card} handleDelete={handleDelete}/>
                             
-                        </>
+                        </div>
                             
                         
                     )
@@ -138,8 +135,11 @@ export default function CardList() {
 
             
         </div>
-        <div className='flex justify-center items-center relative' >
+        <div className='flex justify-center items-center relative bg-pink-300' >
             <div className='p-2 bg-white absolute -top-4 w-full gradient'></div>
+            <div className='absolute  left-4 bg-lime-300' onClick={() => {props.back()}}>
+                <FontAwesomeIcon icon={faArrowTurnDown} className="rotate-90 p-5"  />
+            </div>
             <div className='p-5 text-4xl' onClick={handleStart}>
                 Go!
             </div>

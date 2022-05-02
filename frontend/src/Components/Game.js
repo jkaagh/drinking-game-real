@@ -1,9 +1,9 @@
 import { faAnglesRight, faArrowTurnDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, {useEffect, useState} from 'react'
-import { Link } from 'react-router-dom'
 
-export default function Game() {
+
+export default function Game(props) {
 
     const [deck, setDeck] = useState([])
     const [index, setIndex] = useState(0)
@@ -32,13 +32,20 @@ export default function Game() {
         
     }
 
+    //eventually make modal prompt here.
+    const handleGoBack = () => {
+        localStorage.removeItem("ingame") //will no longer boot app to game
+        props.toCardList()
+
+    }
+
   return (
       
     <div className='h-screen bg-slate-200 flex justify-center items-center flex-col gap-6'>
-        <div className='absolute top-5 left-5'>
-            <Link to="/">
-                <FontAwesomeIcon icon={faArrowTurnDown} className="rotate-90 p-5" />
-            </Link>
+        <div className='absolute top-5 left-5' onClick={() => {handleGoBack()}}>
+            
+            <FontAwesomeIcon icon={faArrowTurnDown} className="rotate-90 p-5" />
+            
         </div>
         <div className="p-4  text-4xl">
         {
