@@ -12,6 +12,8 @@ app.use("/card/", cardRoutes)
 const deckRoutes = require("./routes/deck-routes")
 app.use("/deck/", deckRoutes)
 
+const accountRoutes = require("./routes/account-routes")
+app.use("/account/", accountRoutes)
 
 mongoose.connect("mongodb://localhost/drinkinggame")
 const db = mongoose.connection

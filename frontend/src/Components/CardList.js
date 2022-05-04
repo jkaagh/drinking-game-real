@@ -11,6 +11,7 @@ export default function CardList(props) {
     const [inputField, setInputField]   = useState("")
     const [deck, setDeck]               = useState([])
     const [redirect, setRedirect] = useState(false)
+    const [canEdit, setCanEdit] = useState(false)
     
     
 
@@ -36,7 +37,11 @@ export default function CardList(props) {
             // console.log(response.data.data)
           
             // console.log(deck)
+            console.log(response.data)
             setDeck(response.data.data)
+            if(response.data.creator == localStorage.getItem("username")){
+                setCanEdit(true)
+            }
         })
 
         
@@ -45,8 +50,10 @@ export default function CardList(props) {
 
 
     const handleSubmit = () => {
-        
-        axios.post(address + "/card/create/", {prompt:inputField, id:localStorage.getItem("selectedDeck")})
+
+
+
+        axios.post(address + "/card/create/", {prompt:inputField, password: props.account.password, id:localStorage.getItem("selectedDeck")})
         .then((response) => {
             if(response.data.success == false){
                 alert("Error, card not added.")
@@ -64,7 +71,7 @@ export default function CardList(props) {
 
         console.log(id)
         
-        axios.delete(address + "/card/delete/" + id)
+        axios.delete(address + "/card/delete/" + id + "/" + props.account.password)
         .then((response) => {
             if(response.data.success == false){
                 alert("Error, card not deleted.")
@@ -107,11 +114,11 @@ export default function CardList(props) {
 
             {
                 deck.map((card, index) => {
-                    console.log()
+                    
                     return(
                         <div key={index}>
                             {/* eventually just replace id with server object id */}
-                            <CardInput  data={card} handleDelete={handleDelete}/>
+                            <CardInput canEdit={canEdit} account={props.account} data={card} handleDelete={handleDelete}/>
                             
                         </div>
                             
@@ -119,34 +126,37 @@ export default function CardList(props) {
                     )
                 })
             }
-            <input className='standardInput shadow-md bg-slate-100 mb-8'
-            placeholder='Add new card' 
-            onChange={(e) => {
-                setInputField(e.target.value)
-            }}
-            onKeyDown={(e) => {
-                if(e.keyCode === 13){
-                    handleSubmit()
-                    e.target.value = ""
-                    
-                }
-            }}
-            />
+
+            {/* Input field. Show if allowed */}
+            {
+                canEdit &&
+                <input className='standardInput shadow-md bg-slate-100 mb-8'
+                placeholder='Add new card' 
+                onChange={(e) => {
+                    setInputField(e.target.value)
+                }}
+                onKeyDown={(e) => {
+                    if(e.keyCode === 13){
+                        handleSubmit()
+                        e.target.value = ""
+                        
+                    }
+                }}
+                
+                />
+            }
 
             
         </div>
-        <div className='flex justify-center items-center relative bg-pink-300' >
+        <div className='flex justify-center items-center relative ' >
             <div className='p-2 bg-white absolute -top-4 w-full gradient'></div>
-            <div className='absolute  left-4 bg-lime-300' onClick={() => {props.back()}}>
+            <div className='absolute  left-4 ' onClick={() => {props.back()}}>
                 <FontAwesomeIcon icon={faArrowTurnDown} className="rotate-90 p-5"  />
             </div>
             <div className='p-5 text-4xl' onClick={handleStart}>
                 Go!
             </div>
-            {
-                redirect &&
-                <Navigate replace to="/play/"/>
-            }
+
         </div>
     </div>
   )

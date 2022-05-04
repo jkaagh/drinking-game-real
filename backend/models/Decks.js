@@ -8,7 +8,11 @@ const DeckSchema = new mongoose.Schema({
     },
     creator:{
         type: String,
-        default: "Admin"
+        required: true,
+    },
+    creatorId:{
+        type: String,
+        required: true,
     },
     lastUpdate:{
         type: Date,

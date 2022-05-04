@@ -12,6 +12,7 @@ export default function CardInput(props) {
     
     useEffect(() => {
         setInput(props.data.prompt)
+        console.log(props.canEdit)
        
     }, [])
     
@@ -34,25 +35,28 @@ export default function CardInput(props) {
     }
 
     return (
-
+       
         <form className='cardListBox flex justify-between'>
-            <input value={input} onChange={(e) => {
+            <input readOnly value={input} onChange={(e) => {
                 setInput(e.target.value)
             }}
             className="py-3 px-4 w-4/5 outline-none " 
             />
-            <div className='py-3 px-4 flex' onClick={() => {
-                handleDelete()
-            }}>
-                <span className={buttonClasses}>{buttonText}</span>
-                {
-                    confirm == "deleting" &&
-                    <div >
-                        <FontAwesomeIcon icon={faCircleNotch} className='animate-spin text-red-600' />
-                    </div>
-                }
-            </div>
 
+            {
+                props.canEdit &&
+                <div className='py-3 px-4 flex' onClick={() => {
+                    handleDelete()
+                }}>
+                    <span className={buttonClasses}>{buttonText}</span>
+                    {
+                        confirm == "deleting" &&
+                        <div >
+                            <FontAwesomeIcon icon={faCircleNotch} className='animate-spin text-red-600' />
+                        </div>
+                    }
+                </div>
+            }
         </form>
     )
 }

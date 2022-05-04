@@ -2,40 +2,54 @@ import axios from 'axios'
 import React, {useState} from 'react'
 import Modal from '../Components/Modal'
 import { address } from '../serverAddress'
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function DeckCard(props) {
 
     const [show, setShow] = useState(false)
-
+    
     const handleDelete = () => {
-        axios.delete(address + "/deck/delete/" + props.data._id)
+        axios.delete(address + "/deck/delete/" + props.data._id + "/" + props.account.password)
         .then((response) => {
             console.log(response.data)
+            
         })
     }
 
     return (
-        <div className="p-5 shadow-lg border-b-2 border-purple-500 flex justify-between" >
-            <div className='bg-pink-500 w-10/12' onClick={() => { props.select(props.data._id) }}>
-                <p className='font-bold'>{props.data.name}</p>
+        <div className="p-5 shadow-lg border-b-2 border-purple-500 flex justify-between rounded bg-slate-100" >
+            <div className=' w-10/12' onClick={() => { props.select(props.data._id) }}>
+                <p className='text-xl'>{props.data.name}</p>
                 <p>made by {props.data.creator}</p>
                 <p>{props.data.cardAmount} cards.</p>
             </div>
-            <div className='bg-lime-500 relative' onClick={() => {setShow(true)}}>
-                menu
+            <div className=' relative' onClick={() => {setShow(true)}}>
+            <FontAwesomeIcon icon={faEllipsisV} className=""  />
                
             </div>
             <Modal show={show}>
-                <div className='flex flex-row-reverse'>
+               
+
+
+                <div className='flex justify-between'>
+                    <div className=''>
+                        <p className='text-xl'>{props.data.name}</p>
+                    </div>
                     <div className='p-2 font-bold' onClick={() => {setShow(false)}}>
                         X   
                     </div>
                 </div>
-                <div>
-                    <div className='standardButton' onClick={handleDelete}>
-                        Delete Deck
+                {
+                    localStorage.getItem("username") == props.data.creator &&
+                    <div>
+                        <div className='standardButton' onClick={handleDelete}>
+                            Delete Deck
+                        </div>
                     </div>
-                </div>
+
+                }
+
             </Modal>
         </div>
     )

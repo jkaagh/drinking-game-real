@@ -3,21 +3,23 @@ import axios from "axios"
 import {address} from "../serverAddress"
 import DeckCard from './DeckCard';
 import Modal from '../Components/Modal';
+import Admin from './Admin';
 
 
 export default function DeckList(props) {
     
     const [show, setShow] = useState(false);
     const [input, setInput] = useState("")
-    const [creator, setCreator] = useState("")
+    const [showAccount, setShowAccount] = useState(false)
+    const [password, setPassword] = useState("")
 
-
+    
 
     const handleCreateDeck = () => {
-        axios.post(address + "/deck/create/", {name: input, creator: creator})
+        axios.post(address + "/deck/create/", {name: input, password: props.account.password})
         .then((response) => {
-            if(response.data.success == false){
-                alert("Error. Deck not created.")
+            if(response.data.success === false){
+                alert(response.data.msg)
             }
             props.fetchDecks()
             setShow(false)
@@ -27,31 +29,29 @@ export default function DeckList(props) {
     const select = (id) => {
         props.select(id)
     }
+
+   
     return (
         <div className='flex flex-col gap-3 p-4'>
-            <div className='flex  gap-2'>
-                <div className='standardButton' onClick={() => {setShow(true)}}>
-                    Create Deck
+            <div className='flex justify-between gap-2'>
+                <div className='standardButton' onClick={() => {setShowAccount(true)}}>
+                    Account
                 </div>
+                {
+                    props.account !== undefined &&
+                      
+                    <div className='standardButton' onClick={() => {setShow(true)}}>
+                        Create Deck
+                    </div>
+                }
+                
 
             </div>
             {
                 props.decks && props.decks.map((deck, index) => {
                     return (
-                        <DeckCard key={index} data={deck} select={select}/>
-                        // <div key={index} className="p-5 shadow-lg border-b-2 border-purple-500 flex justify-between" >                            
-                        //     <div className='bg-pink-500 w-10/12' onClick={() => {props.select(deck._id)}}>
-                        //         <p>{deck.name}</p>
-                        //         <p>made by {deck.creator}</p>
-                        //         <p>{deck.cardAmount} cards.</p>
-                        //     </div>
-                        //     <div className='bg-lime-500 relative'>
-                        //         menu    
-                        //         <div className='p-8 absolute bg-black right-0'>
+                        <DeckCard key={index} data={deck} select={select} account={props.account} delete={props.fetchDecks()}/>
 
-                        //         </div>
-                        //     </div>
-                        // </div>
                     )
                 })
             }
@@ -64,12 +64,52 @@ export default function DeckList(props) {
                 <div>
                     <p>Deck name:</p>
                     <input className='standardInput' onChange={(e) => {setInput(e.target.value)}}/>
-                    <p>Creator name:</p>
-                    <input className='standardInput' onChange={(e) => {setCreator(e.target.value)}}/>
+
 
                     <div className='standardButton' onClick={()  => {handleCreateDeck()}}>
                         Confirm
                     </div>
+                </div>
+            </Modal>
+            <Modal show={showAccount}>
+                <div className='flex justify-between'>
+                    <div className=''>
+                        <p className='text-xl'>Account settings</p>
+                    </div>
+                    <div className=' font-bold' onClick={() => { setShowAccount(false) }}>
+                        X
+                    </div>
+                </div>
+                <div className='pt-5'>
+
+
+
+                    {
+                        props.account === undefined ?
+
+                            <div>
+                                <p>Password</p>
+                                <input className='standardInput' onChange={(e) => { setPassword(e.target.value) }} />
+
+
+                                <div className='standardButton' onClick={() => { props.handleLogin(password) }}>
+                                    Login
+                                </div>
+                            </div>
+                            :
+                            <div>
+                                <p>Logged in as {props.account.name}</p>
+                                <div className='standardButton' onClick={() => { props.handleLogout() }}>
+                                    Logout
+                                </div>
+
+                                {
+                                    props.account.admin == "true" &&
+                                    <Admin account={props.account}/>
+                                        
+                                }
+                            </div>
+                    }
                 </div>
             </Modal>
         </div>

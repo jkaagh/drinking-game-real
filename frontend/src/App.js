@@ -3,7 +3,7 @@ import axios from "axios"
 import CardList from "./Components/CardList";
 import Game from "./Components/Game";
 import DeckList from "./DeckList/DeckList";
-import serverAdress from "./serverAddress"
+import serverAdress, { address } from "./serverAddress"
 
 function App() {
 
@@ -11,28 +11,15 @@ function App() {
 
     //holds list of decks. this is fetched on app boot and when click refresh button or when go to decklist page
     const [deckList, setDeckList] = useState([])
+    const [account, setAccount] = useState(undefined)
 
     //on app boot
     useEffect(() => {
         
-        if(localStorage.getItem("ingame") != null){
-            console.log("asdasd")
-            setPage("Game")
-            return
-        }
 
-        //only checks if a deck is selected. this will probably only run once per user.
-        if(localStorage.getItem("selectedDeck") == null){
-            //show list of decks
-            setPage("DeckList")
-            handleFetchDecks()
-        }
-        else{
-            setPage("CardList")
-        }
-
-       
-        
+        if(localStorage.getItem("CurrentPage") == "Game") toGame()
+        if(localStorage.getItem("CurrentPage") == "DeckList") handleGoBack()
+        if(localStorage.getItem("CurrentPage") == "CardList") toCardList()
 
     }, [])
     
@@ -40,12 +27,14 @@ function App() {
     //selects a deck and goes to CardList screen
     const handleSelect = (id) => {
         localStorage.setItem("selectedDeck", id)
-        setPage("CardList")
+        toCardList()
+        
     }
 
     //sets page to DeckList.js note to self: make 1 function to set page to this, and reuse everywhere.
     const handleGoBack = () =>{
         setPage("DeckList")
+        localStorage.setItem("CurrentPage", "DeckList")
         handleFetchDecks()
     }
 
@@ -62,13 +51,57 @@ function App() {
 
     const toGame = () => {
         setPage("Game")
+        localStorage.setItem("CurrentPage", "Game")
     }
    
     const toCardList = () => {
         setPage("CardList")
+        localStorage.setItem("CurrentPage", "CardList")
+
     }
 
+    const handleLogin = (password) => {
+        console.log(password)
+        axios.get(address + "/account/login/" + password)
+        .then((response) => {
+            alert(response.data.msg)
+            console.log(response.data)
+            if(response.data.success){
+                localStorage.setItem("isAdmin", response.data.data.admin)
+                localStorage.setItem("username", response.data.data.name)
+                localStorage.setItem("password", response.data.data.password)
 
+                setAccount({
+                    admin: response.data.data.admin.toString(),
+                    name: response.data.data.name,
+                    password: response.data.data.password
+                 })
+            }
+        })
+    }
+
+    useEffect(() => {
+       
+        if(localStorage.getItem("username") == null) return
+         //if logged in:
+
+         //set account state to this, sent to all components.
+         setAccount({
+            admin: localStorage.getItem("isAdmin"),
+            name: localStorage.getItem("username"),
+            password: localStorage.getItem("password")
+         })
+
+
+  
+    }, [])
+
+    const handleLogout = () => {
+        setAccount(undefined)
+        localStorage.removeItem("isAdmin")
+        localStorage.removeItem("username")
+        localStorage.removeItem("password")
+    }
 
   return (
     <div className="App">
@@ -79,11 +112,19 @@ function App() {
             </Routes>
         </BrowserRouter> */}
     {
-        page == "CardList" && <CardList back={handleGoBack} toGame={toGame}/>
+        page == "CardList" && <CardList back={handleGoBack} toGame={toGame} account={account}/>
        
     }
     {
-        page == "DeckList" && <DeckList decks={deckList} select={handleSelect} fetchDecks={handleFetchDecks}/>
+        page == "DeckList" && <DeckList 
+                                decks={deckList} 
+                                select={handleSelect} 
+                                fetchDecks={handleFetchDecks} 
+                                handleLogin={handleLogin}
+                                handleLogout={handleLogout}
+                                account={account}
+                                delete={handleFetchDecks}
+                                />
        
     }
      {
