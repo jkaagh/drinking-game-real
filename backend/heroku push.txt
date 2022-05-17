@@ -1,0 +1,7 @@
+heroku login
+
+git add .
+
+git commit -am "text here"
+
+git push heroku master

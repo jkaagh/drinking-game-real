@@ -4,6 +4,8 @@ import {address} from "../serverAddress"
 import DeckCard from './DeckCard';
 import Modal from '../Components/Modal';
 import Admin from './Admin';
+import { faCircle, faCircleNotch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 export default function DeckList(props) {
@@ -12,15 +14,17 @@ export default function DeckList(props) {
     const [input, setInput] = useState("")
     const [showAccount, setShowAccount] = useState(false)
     const [password, setPassword] = useState("")
-
+    const [loading, setLoading] = useState(false)
     
 
     const handleCreateDeck = () => {
+        setLoading(true)
         axios.post(address + "/deck/create/", {name: input, password: props.account.password})
         .then((response) => {
             if(response.data.success === false){
                 alert(response.data.msg)
             }
+            setLoading(false)
             props.fetchDecks()
             setShow(false)
         })          
@@ -30,6 +34,12 @@ export default function DeckList(props) {
         props.select(id)
     }
 
+    const handleDelete = () => {
+        console.log("deleted thing")
+        props.fetchDecks()
+        setShow(false)
+        
+    }
    
     return (
         <div className='flex flex-col gap-3 p-4'>
@@ -48,27 +58,46 @@ export default function DeckList(props) {
 
             </div>
             {
-                props.decks && props.decks.map((deck, index) => {
+                props.decks !== undefined ? props.decks.map((deck, index) => {
                     return (
-                        <DeckCard key={index} data={deck} select={select} account={props.account} delete={props.fetchDecks()}/>
+                        <DeckCard key={index} data={deck} select={select} account={props.account} delete={handleDelete}/>
 
                     )
                 })
+                :
+                <div className='text-center'>
+                    <FontAwesomeIcon icon={faCircleNotch} className="animate-spin"  />
+                </div>
             }
-                <Modal show={show}>
+            <Modal show={show}>
                 <div className='flex flex-row-reverse'>
                     <div className='p-2 font-bold' onClick={() => {setShow(false)}}>
                         X   
                     </div>
                 </div>
                 <div>
-                    <p>Deck name:</p>
-                    <input className='standardInput' onChange={(e) => {setInput(e.target.value)}}/>
+                    {
+                        loading === false ? 
+                        <>
+
+                                <p>Deck name:</p>
+                                <input className='standardInput' onChange={(e) => { setInput(e.target.value) }} />
 
 
-                    <div className='standardButton' onClick={()  => {handleCreateDeck()}}>
-                        Confirm
-                    </div>
+                                <div className='standardButton' onClick={() => { handleCreateDeck() }}>
+                                    Confirm
+                                </div>
+                        </>
+
+                        :
+
+                        <>
+                            <div className='text-center'>
+                    <FontAwesomeIcon icon={faCircleNotch} className="animate-spin"  />
+                </div>
+                        </>
+                    }
+                  
                 </div>
             </Modal>
             <Modal show={showAccount}>

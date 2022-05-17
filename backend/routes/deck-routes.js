@@ -64,10 +64,15 @@ router.delete("/delete/:id/:password", async(req, res) => {
     }
 
 
-    //if the deck you're trying to edit has the same creator as the password
-    if(acc[0]._id != deck.creatorId){
-        return res.send({success: false, msg:"Wrong account!"})
+    try{
+        //if the deck you're trying to edit has the same creator as the password
+        if(acc[0]._id != deck.creatorId){
+            return res.send({success: false, msg:"Wrong account!"})
+        }
+    }catch(err){
+        return console.log(err)
     }
+
     
 
     try{

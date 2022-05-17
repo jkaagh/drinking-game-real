@@ -10,16 +10,20 @@ function App() {
     const [page, setPage] = useState("")
 
     //holds list of decks. this is fetched on app boot and when click refresh button or when go to decklist page
-    const [deckList, setDeckList] = useState([])
+    const [deckList, setDeckList] = useState(undefined)
     const [account, setAccount] = useState(undefined)
 
     //on app boot
     useEffect(() => {
         
+        console.log(address)
 
         if(localStorage.getItem("CurrentPage") == "Game") toGame()
         if(localStorage.getItem("CurrentPage") == "DeckList") handleGoBack()
         if(localStorage.getItem("CurrentPage") == "CardList") toCardList()
+        else{
+            handleGoBack()
+        }
 
     }, [])
     
@@ -35,16 +39,19 @@ function App() {
     const handleGoBack = () =>{
         setPage("DeckList")
         localStorage.setItem("CurrentPage", "DeckList")
+        console.log("asdf")
         handleFetchDecks()
+       
     }
 
     const handleFetchDecks = () => {
-       
+        console.log("asdasdas")
         axios.get(serverAdress.address + "/deck/fetch")
         .then((response) => {
            
             if(response.data.success){
                 setDeckList(response.data.data)
+                console.log(response.data.data)
             }
         })
     }
@@ -123,7 +130,7 @@ function App() {
                                 handleLogin={handleLogin}
                                 handleLogout={handleLogout}
                                 account={account}
-                                delete={handleFetchDecks}
+                                // delete={handleFetchDecks}
                                 />
        
     }

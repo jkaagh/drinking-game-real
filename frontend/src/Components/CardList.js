@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import CardInput from './CardInput'
-import { Navigate } from "react-router-dom"
-import { faAnglesRight, faArrowTurnDown } from '@fortawesome/free-solid-svg-icons'
+
+import {faArrowTurnDown, faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import { address } from '../serverAddress'
@@ -9,7 +9,7 @@ import { address } from '../serverAddress'
 export default function CardList(props) {
 
     const [inputField, setInputField]   = useState("")
-    const [deck, setDeck]               = useState([])
+    const [deck, setDeck]               = useState(undefined)
     const [redirect, setRedirect] = useState(false)
     const [canEdit, setCanEdit] = useState(false)
     
@@ -113,7 +113,7 @@ export default function CardList(props) {
         <div className=' shadow-md h-5/6  flex flex-col gap-2 p-2 overflow-scroll mt-4 ' id="scrollDiv">
 
             {
-                deck.map((card, index) => {
+                deck !== undefined ? deck.map((card, index) => {
                     
                     return(
                         <div key={index}>
@@ -125,6 +125,14 @@ export default function CardList(props) {
                         
                     )
                 })
+
+                :
+
+                <div className='text-center'>
+                    <FontAwesomeIcon icon={faCircleNotch} className="animate-spin"  />
+                </div>
+
+
             }
 
             {/* Input field. Show if allowed */}
