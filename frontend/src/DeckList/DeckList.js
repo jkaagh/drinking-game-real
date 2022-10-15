@@ -47,13 +47,25 @@ export default function DeckList(props) {
                 <div className='standardButton' onClick={() => {setShowAccount(true)}}>
                     Account
                 </div>
+
+
+
+               
+
                 {
                     props.account !== undefined &&
-                      
+                    
                     <div className='standardButton' onClick={() => {setShow(true)}}>
                         Create Deck
                     </div>
+                    
                 }
+
+                <div className='standardButton' >
+                    Select..    
+                </div>
+                    
+              
                 
 
             </div>

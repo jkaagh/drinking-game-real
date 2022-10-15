@@ -21,7 +21,7 @@ export default function DeckCard(props) {
     }
 
     return (
-        <div className="p-5 shadow-lg border-b-2 border-purple-500 flex justify-between rounded  deckCardBackground" >
+        <div className="p-5 shadow-lg border-b-2 border-purple-500 flex justify-between rounded  deckCardBackground">
             <div className=' w-10/12' onClick={() => { props.select(props.data._id) }}>
                 <p className='text-xl'>{props.data.name}</p>
                 <p>made by {props.data.creator}</p>
@@ -33,6 +33,7 @@ export default function DeckCard(props) {
                 <div className=' relative' onClick={() => {setShow(true)}}>
                     <FontAwesomeIcon icon={faEllipsisV} className=""  />
                 </div>
+                
             }
             
             <Modal show={show}>
@@ -68,7 +69,7 @@ export default function DeckCard(props) {
                         }   
                        
                     </div>
-
+                        
                 }
 
             </Modal>
