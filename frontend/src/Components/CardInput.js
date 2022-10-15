@@ -12,7 +12,7 @@ export default function CardInput(props) {
     
     useEffect(() => {
         setInput(props.data.prompt)
-        console.log(props.canEdit)
+        
        
     }, [])
     

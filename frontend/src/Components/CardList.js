@@ -5,6 +5,9 @@ import {faArrowTurnDown, faCircleNotch } from '@fortawesome/free-solid-svg-icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import { address } from '../serverAddress'
+import Modal2 from './Modal2'
+import PlayerList from './PlayerList'
+import GenerateDeck from './GenerateDeck'
 
 export default function CardList(props) {
 
@@ -12,6 +15,7 @@ export default function CardList(props) {
     const [deck, setDeck]               = useState(undefined)
     const [redirect, setRedirect] = useState(false)
     const [canEdit, setCanEdit] = useState(false)
+    
     
     
 
@@ -37,7 +41,7 @@ export default function CardList(props) {
             // console.log(response.data.data)
           
             // console.log(deck)
-            console.log(response.data)
+           
             setDeck(response.data.data)
             if(response.data.creator == localStorage.getItem("username")){
                 setCanEdit(true)
@@ -84,12 +88,17 @@ export default function CardList(props) {
 
     const handleStart = () => {
 
+        
+        
         //generate and shuffle deck
-        let ShuffledDeck = []
-        deck.forEach(card => {
-            ShuffledDeck.push(card.prompt)
-        });
-        ShuffledDeck.sort(() => Math.random() - 0.5)
+        let ShuffledDeck = GenerateDeck(deck)
+
+        return
+        //legacy bullshit
+        // deck.forEach(card => {
+        //     ShuffledDeck.push(card.prompt)
+        // });
+        // ShuffledDeck.sort(() => Math.random() - 0.5)
         
         //handle localstorage
         localStorage.setItem("ingame", true)
@@ -108,8 +117,15 @@ export default function CardList(props) {
 
     }
 
+
+
+    ///////
+
   return (
     <div className=' customHeight' >
+
+        <PlayerList/>
+
         <div className=' shadow-md h-5/6  flex flex-col gap-2 p-2 overflow-scroll mt-4 ' id="scrollDiv">
 
             {

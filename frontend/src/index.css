@@ -60,3 +60,8 @@ background: linear-gradient(128deg, rgba(244,241,249,1) 67%, rgba(234,227,238,1)
 
 }
 
+.deleteButton{
+    @apply rounded-full bg-slate-300 shadow-lg   w-7 h-7 flex items-center justify-center font-bold text-red-700 font-mono select-none
+ 
+}
+
