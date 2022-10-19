@@ -22,6 +22,8 @@ export default function GenerateDeck(deck) {
 
         //todo handle special properties like
         //for example, if a card can only appear after 30% of the deck, return
+        //in general every other mechanic is used here.
+        //generate new cards to put into deck.
 
         //insert into ShuffledDeck
         ShuffledDeck.push(card)
