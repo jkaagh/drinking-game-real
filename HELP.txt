@@ -1,0 +1,7 @@
+for when i return to this project in 8 months and have forgotten what the fuck anything is.
+
+if your server says: Error: querySrv ENOTFOUND _mongodb._tcp.cluster0.tcn5q.mongodb.net
+its because mongodb thingie is sleeping.
+
+
+i have all my shit on kanbanflow, and there is also links to the gptchat chichanery.
