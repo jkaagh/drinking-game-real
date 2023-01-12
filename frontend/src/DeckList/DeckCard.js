@@ -1,23 +1,27 @@
 import axios from 'axios'
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import Modal from '../Components/Modal'
 import { address } from '../serverAddress'
 import { faEllipsisV, faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { AccountContext } from '../App'
 
 export default function DeckCard(props) {
 
     const [show, setShow] = useState(false)
     const [loading, setLoading] = useState(false)
-    console.log(props.account)
+    const {account, setAccount} = useContext(AccountContext)
+
+
     const handleDelete = () => {
         setLoading(true)
-        axios.delete(address + "/deck/delete/" + props.data._id + "/" + props.account.password)
+        axios.delete(address + "/deck/delete/" + props.data._id + "/" + account.password)
         .then((response) => {
             console.log(response.data)
             props.delete()
             setLoading(false)
         })
+        setShow(false)
     }
 
     return (
@@ -28,26 +32,16 @@ export default function DeckCard(props) {
                 <p>{props.data.cardAmount} cards.</p>
             </div>
             {
-                props.account &&
+                account.name &&
 
                 <div className=' relative' onClick={() => {setShow(true)}}>
-                    <FontAwesomeIcon icon={faEllipsisV} className=""  />
+                    <FontAwesomeIcon icon={faEllipsisV} className="p-3"  />
                 </div>
                 
             }
             
-            <Modal show={show}>
+            <Modal show={show} setShow={setShow} title={props.data.name}>
                
-
-
-                <div className='flex justify-between'>
-                    <div className=''>
-                        <p className='text-xl'>{props.data.name}</p>
-                    </div>
-                    <div className='p-2 font-bold' onClick={() => {setShow(false)}}>
-                        X   
-                    </div>
-                </div>
                 {
                     
                     localStorage.getItem("username") == props.data.creator &&

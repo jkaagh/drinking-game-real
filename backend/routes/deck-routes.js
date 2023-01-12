@@ -6,10 +6,11 @@ const Card = require("../models/Cards")
 router = express.Router()
 
 router.post("/create/", async(req, res) => {
-    
+        
     //find user
     let user = await Account.find({password: req.body.password})
 
+    console.log(req.body)   
     //how many decks does the user already have?
     let existingDecks = await Deck.find({creatorId: user[0]._id})
     console.log(existingDecks.length)
@@ -56,6 +57,8 @@ router.delete("/delete/:id/:password", async(req, res) => {
 
     let deck 
     let acc
+
+    console.log(req.params)
     try{
         deck = await Deck.findById(req.params.id)
         acc = await Account.find({password: req.params.password})

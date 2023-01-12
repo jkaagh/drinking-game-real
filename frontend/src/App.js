@@ -1,17 +1,29 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import axios from "axios"
 import CardList from "./Components/CardList";
 import Game from "./Components/Game";
 import DeckList from "./DeckList/DeckList";
 import serverAdress, { address } from "./serverAddress"
 
+
+const AccountContext = React.createContext()
+
 function App() {
+
+
+    const [account, setAccount] = useState(
+        {
+            admin: undefined,
+            name: undefined,
+            password: undefined
+        }
+    )
+    
 
     const [page, setPage] = useState("")
 
     //holds list of decks. this is fetched on app boot and when click refresh button or when go to decklist page
     const [deckList, setDeckList] = useState(undefined)
-    const [account, setAccount] = useState(undefined)
 
     //on app boot
     useEffect(() => {
@@ -87,6 +99,7 @@ function App() {
         })
     }
 
+    //check if logged in on boot
     useEffect(() => {
        
         if(localStorage.getItem("username") == null) return
@@ -103,12 +116,12 @@ function App() {
   
     }, [])
 
-    const handleLogout = () => {
-        setAccount(undefined)
-        localStorage.removeItem("isAdmin")
-        localStorage.removeItem("username")
-        localStorage.removeItem("password")
-    }
+    // const handleLogout = () => {
+    //     setAccount(undefined)
+    //     localStorage.removeItem("isAdmin")
+    //     localStorage.removeItem("username")
+    //     localStorage.removeItem("password")
+    // }
 
   return (
     <div className="App">
@@ -123,17 +136,18 @@ function App() {
        
     }
     {
-        page == "DeckList" && <DeckList 
-                                decks={deckList} 
-                                select={handleSelect} 
-                                fetchDecks={handleFetchDecks} 
-                                handleLogin={handleLogin}
-                                handleLogout={handleLogout}
-                                account={account}
-                                // delete={handleFetchDecks}
-                                />
-       
-    }
+              page == "DeckList" &&
+                <AccountContext.Provider value={{account, setAccount}}>
+
+                    <DeckList
+                        decks={deckList}
+                        select={handleSelect}
+                        fetchDecks={handleFetchDecks}
+                    // delete={handleFetchDecks}
+                    />
+
+                </AccountContext.Provider>
+          }
      {
         page == "Game" && <Game toCardList={toCardList}/>
        
@@ -144,3 +158,5 @@ function App() {
 }
 
 export default App;
+
+export {AccountContext}

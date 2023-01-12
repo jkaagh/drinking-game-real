@@ -21,7 +21,7 @@ export default function Game(props) {
 
     const handlePick = () => {
         
-        console.log(index, deck)
+        // console.log(index, deck)
 
         if(index > deck.length){
             console.log("finished!")
