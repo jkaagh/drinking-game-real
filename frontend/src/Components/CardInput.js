@@ -1,6 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleNotch} from '@fortawesome/free-solid-svg-icons'
 import React, {useState, useEffect} from 'react'
+import TextareaAutosize from 'react-textarea-autosize';
+import { AccountContext } from '../App';
 
 export default function CardInput(props) {
 
@@ -9,7 +11,7 @@ export default function CardInput(props) {
     const [buttonClasses, setButtonClasses] = useState("text-red-600 font-bold")
     const [confirm, setConfirm] = useState("false")
 
-    
+    const {account, setAccount} = useContext(AccountContext)
     useEffect(() => {
         setInput(props.data.prompt)
         
@@ -37,11 +39,13 @@ export default function CardInput(props) {
     return (
        
         <form className='cardListBox flex justify-between'>
-            <input readOnly value={input} onChange={(e) => {
+            <TextareaAutosize value={input} onChange={(e) => {
                 setInput(e.target.value)
+                props.handleUpdate(props.data._id, e.target.value)
             }}
-            className="py-3 px-4 w-4/5 outline-none " 
+            className="py-3 px-4 w-4/5 outline-none resize-none overflow-auto h-auto " 
             />
+           
 
             {
                 props.canEdit &&
