@@ -38,7 +38,7 @@ export default function Admin(props) {
             <div className='py-2 mt-5'>
                 List of users:
             </div>
-            <div className='overflow-scroll h-40 border-2 shadow-lg border-purple-100 rounded'>
+            <div className='overflow-scroll max-h-96 border-2 shadow-lg border-purple-100 rounded'>
 
                 {
                     list.map((user, index) => {

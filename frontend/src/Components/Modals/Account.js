@@ -11,12 +11,13 @@ export default function Account(props) {
     const [password, setPassword] = useState("")  
     const {account, setAccount} = useContext(AccountContext)
 
+    console.log(account)
 
     const handleLogin = (password) => {
         console.log(password)
         axios.get(address + "/account/login/" + password)
         .then((response) => {
-            alert(response.data.msg)
+            
             console.log(response.data)
             if(response.data.success){
                 localStorage.setItem("isAdmin", response.data.data.admin)
@@ -33,10 +34,16 @@ export default function Account(props) {
     }
 
     const handleLogout = () => {
-        setAccount(undefined)
+        setAccount({
+            admin: undefined,
+            name: undefined,
+            password: undefined
+        })
         localStorage.removeItem("isAdmin")
         localStorage.removeItem("username")
         localStorage.removeItem("password")
+
+        props.setShowAccount(false)
     }
     
     console.log(account)

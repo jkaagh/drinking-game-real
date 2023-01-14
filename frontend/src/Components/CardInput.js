@@ -1,8 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleNotch} from '@fortawesome/free-solid-svg-icons'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import TextareaAutosize from 'react-textarea-autosize';
 import { AccountContext } from '../App';
+
 
 export default function CardInput(props) {
 
@@ -12,6 +13,7 @@ export default function CardInput(props) {
     const [confirm, setConfirm] = useState("false")
 
     const {account, setAccount} = useContext(AccountContext)
+    
     useEffect(() => {
         setInput(props.data.prompt)
         

@@ -4,9 +4,11 @@ import CardList from "./Components/CardList";
 import Game from "./Components/Game";
 import DeckList from "./DeckList/DeckList";
 import serverAdress, { address } from "./serverAddress"
+import generateCards from "./methods/generateCards";
 
 
-const AccountContext = React.createContext()
+const AccountContext = React.createContext({})
+const StartGameContext = React.createContext({})
 
 function App() {
 
@@ -30,13 +32,22 @@ function App() {
         
         console.log(address)
 
-        if(localStorage.getItem("CurrentPage") == "Game") toGame()
-        if(localStorage.getItem("CurrentPage") == "DeckList") handleGoBack()
-        if(localStorage.getItem("CurrentPage") == "CardList") toCardList()
-        else{
-            handleGoBack()
-        }
+        switch(localStorage.getItem("CurrentPage")){
+            case "Game":
+            toGame();
+            break;
 
+            case "DeckList":
+            handleGoBack();
+            break;
+
+            case "CardList":
+            toCardList();
+            break;
+
+            default:
+            handleGoBack();
+            }
     }, [])
     
 
@@ -69,6 +80,26 @@ function App() {
     }
 
     const toGame = () => {
+        setPage("Game")
+        localStorage.setItem("CurrentPage", "Game")
+    }
+
+    const handleStart = (deck, cont) => {
+
+        
+        if(cont){
+            setPage("Game")
+            localStorage.setItem("CurrentPage", "Game")
+            return
+        }
+
+        let FinishedDeck = generateCards(deck)
+
+        //handle localstorage
+        localStorage.setItem("ingame", true)
+        localStorage.setItem("ShuffledDeck", JSON.stringify(FinishedDeck))
+        localStorage.setItem("CardIndex", 0)
+
         setPage("Game")
         localStorage.setItem("CurrentPage", "Game")
     }
@@ -125,34 +156,25 @@ function App() {
 
   return (
     <div className="App">
-        {/* <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<CardList />} />
-                <Route path="play/" element={<Game />} />
-            </Routes>
-        </BrowserRouter> */}
-    {
-        page == "CardList" && <CardList back={handleGoBack} toGame={toGame} account={account}/>
-       
-    }
-    {
-              page == "DeckList" &&
-                <AccountContext.Provider value={{account, setAccount}}>
-
+        <StartGameContext.Provider value={{handleStart}}>
+        <AccountContext.Provider value={{account, setAccount}}>
+            {
+                page == "CardList" && <CardList back={handleGoBack} toGame={toGame} account={account}/>
+            }
+            {
+                page == "DeckList" &&
                     <DeckList
-                        decks={deckList}
-                        select={handleSelect}
-                        fetchDecks={handleFetchDecks}
-                    // delete={handleFetchDecks}
+                    decks={deckList}
+                    select={handleSelect}
+                    fetchDecks={handleFetchDecks}
                     />
-
-                </AccountContext.Provider>
-          }
-     {
-        page == "Game" && <Game toCardList={toCardList}/>
-       
-    }
-
+            }
+            {
+                page == "Game" && <Game toCardList={toCardList}/>
+            
+            }
+        </AccountContext.Provider>
+        </StartGameContext.Provider>
     </div>
   );
 }
@@ -160,3 +182,4 @@ function App() {
 export default App;
 
 export {AccountContext}
+export {StartGameContext}

@@ -8,7 +8,8 @@ import { address } from '../serverAddress'
 import generateCards from '../methods/generateCards'
 import Modal from './Modal'
 import PlayerList from './Modals/PlayerList'
-import { AccountContext } from '../App'
+import { AccountContext, StartGameContext } from '../App'
+
 
 export default function CardList(props) {
 
@@ -19,8 +20,12 @@ export default function CardList(props) {
 
     const [showPlayerList, setShowPlayerList] = useState(false)
     const [showInfoModal, setShowInfoModal] = useState(false)
-    const { account, setAccount } = useContext(AccountContext)
 
+    
+    const { account, setAccount } = useContext(AccountContext)
+    const {handleStart} = useContext(StartGameContext)
+
+    
 
     useEffect(() => {
         //fetch cards from server
@@ -62,6 +67,7 @@ export default function CardList(props) {
                     return
                 }
             handleFetchCards()
+            setInputField("")
         })
     }
 
@@ -77,229 +83,18 @@ export default function CardList(props) {
     }
 
     const handleUpdate = (id, update) => {
-        console.log(id, update)
+        console.log(account)
         axios.patch(address + "/card/update/" + id, { update: update, password: account.password })
             .then((response) => {
                 if (response.data.success == false) {
                     alert("Error, card couldn't be updated.")
                     return
                 }
+                else{
+                    console.log(response.data)
+                }
             })
     }
-
-    const handleStart = () => {
-
-
-        // let cards = [];
-        // for (let i = 0; i < 200; i++) {
-        //   cards.push({
-        //     prompt: `card ${i} {p1}`,
-        //     options: {
-        //       duplicates: 1
-        //     }
-        //   });
-        // }
-
-        let cards = [
-            {
-                prompt: "Alle Drikker",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} kysser {p2}",
-                options: {
-                    dupes: 0,
-                }
-            },
-            {
-                prompt: "{p1} skal sutte {p2}'s finger. Hvis {p1} ikke gør det må {p2} slå ham.",
-                options: {
-                    dupes: 0,
-                }
-            }
-
-        ]
-
-
-        let names = [
-            "player 1",
-            "player 2",
-            "player 3",
-            "player 4",
-            "player 5",
-            "player 6",
-            "player 7",
-            "player 8",
-        ]
-
-        console.log(deck)
-        let FinishedDeck = generateCards(deck, names)
-
-
-
-        //handle localstorage
-        localStorage.setItem("ingame", true)
-        localStorage.setItem("ShuffledDeck", JSON.stringify(FinishedDeck))
-        localStorage.setItem("CardIndex", 0)
-
-        props.toGame()
-        return
-
-        // localStorage.setItem("CardIndex", 0)
-        // localStorage.setItem("ShuffledDeck", null)
-        // let ShuffledDecsk = [...deck].sort(() => Math.random() - 0.5)
-        // console.log(ShuffledDeck)
-        // localStorage.setItem("ShuffledDeck", JSON.stringify(ShuffledDeck))
-        // setRedirect(true)
-
-    }
-
 
     const inputRef = useRef(null)
 
@@ -323,8 +118,17 @@ export default function CardList(props) {
     return (
         <div className=' customHeight' >
 
-            <div className='standardButton' onClick={() => { setShowPlayerList(true) }}>
-                Players
+            
+            <div className='flex w-screen p-2 items-center justify-between' >
+                
+                <div onClick={() => { props.back() }}>
+                    <FontAwesomeIcon icon={faArrowTurnDown} className="rotate-90 p-5" />
+                </div>      
+                
+                <div className='standardButton' onClick={() => { setShowPlayerList(true) }}>
+                    Players
+                </div>
+                
             </div>
 
             <Modal
@@ -395,11 +199,14 @@ export default function CardList(props) {
             </div>
             <div className='flex justify-center items-center relative ' >
                 <div className='p-2 bg-white absolute -top-4 w-full gradient'></div>
-                <div className='absolute  left-4 ' onClick={() => { props.back() }}>
-                    <FontAwesomeIcon icon={faArrowTurnDown} className="rotate-90 p-5" />
-                </div>
-                <div className='p-5 text-4xl' onClick={handleStart}>
-                    Go!
+              
+                <div className='flex flex-col items-center '>
+                    <div className='standardButton mt-4  p-5 text-4xl' onClick={() => {handleStart(deck)}}>
+                        Go!
+                    </div>
+                    <div className='p-2 rounded mt-2 underline' onClick={() => {handleStart(deck, true)}}>
+                        Or continue last game
+                    </div>
                 </div>
 
             </div>

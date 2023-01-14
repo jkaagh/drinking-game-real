@@ -94,6 +94,7 @@ router.post("/create/", async(req, res) => {
 
 router.delete("/delete/:id/:password", async(req, res) => {
 
+    //find the card
     let card 
 
     try{
@@ -104,6 +105,7 @@ router.delete("/delete/:id/:password", async(req, res) => {
     }
 
 
+    //find the deck 
     let deck 
     let acc
     try{
@@ -139,7 +141,59 @@ router.delete("/delete/:id/:password", async(req, res) => {
     res.send({success: true, msg:"Successfully deleted card."})
 })
 
+router.patch("/update/:id/", async(req, res) => {
 
+
+        //find the card
+        let card 
+
+        try{
+            card = await Card.findById(req.params.id)
+        }
+        catch(err){
+            console.log(err)
+        }
+    
+        console.log(req.body.password)
+        console.log(req.body.update)
+        //find the deck 
+        let deck 
+        let acc
+        try{
+            deck = await Deck.findById(card.deckId)
+            acc = await Account.find({password: req.body.password})
+        }catch(err){
+            console.log(err)
+        }
+    
+        console.log(deck)
+        console.log(acc)
+        
+        //if the deck you're trying to edit has the same creator as the password
+        try {
+            if(acc[0]._id != deck.creatorId){
+                console.log("wrong account!")                
+            }
+        } catch (error) {
+            console.log(error)
+            return 
+        }
+        //this is horrible but it works for now
+
+
+        
+        try {
+            const object = await Card.findByIdAndUpdate(req.params.id, {prompt: req.body.update}, {new: true})
+            
+            res.send({success: true, msg:"Successfully updated card."})
+        } catch (error) {
+            console.log(error)
+            res.send({success: false, msg:"Error updating card."})
+            return
+        }
+        
+        
+})
 
 
 
