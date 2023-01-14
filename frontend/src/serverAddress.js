@@ -5,6 +5,6 @@ const address = {
 }
 
 
-if (online) address.address = "https://drinkoo.herokuapp.com"
+if (online) address.address = "asdasd"
 
 module.exports = address
