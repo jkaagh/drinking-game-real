@@ -119,7 +119,7 @@ export default function CardList(props) {
         <div className=' customHeight' >
 
             
-            <div className='flex w-screen p-2 items-center justify-between' >
+            <div className='flex w-screen px-2 items-center justify-between' >
                 
                 <div onClick={() => { props.back() }}>
                     <FontAwesomeIcon icon={faArrowTurnDown} className="rotate-90 p-5" />
@@ -141,7 +141,7 @@ export default function CardList(props) {
 
             </Modal>
 
-            <div className=' shadow-md h-5/6  flex flex-col gap-2 p-2 overflow-scroll mt-4 ' id="scrollDiv">
+            <div className=' shadow-md h-5/6  flex flex-col gap-2 p-2 overflow-scroll mt-1' id="scrollDiv">
 
                 {
                     deck !== undefined ? deck.map((card, index) => {
@@ -201,12 +201,16 @@ export default function CardList(props) {
                 <div className='p-2 bg-white absolute -top-4 w-full gradient'></div>
               
                 <div className='flex flex-col items-center '>
-                    <div className='standardButton mt-4  p-5 text-4xl' onClick={() => {handleStart(deck)}}>
+                    <div className='standardButton mt-3  p-4 text-4xl' onClick={() => {handleStart(deck)}}>
                         Go!
                     </div>
-                    <div className='p-2 rounded mt-2 underline' onClick={() => {handleStart(deck, true)}}>
+                    {
+
+                    localStorage.getItem("ShuffledDeck") &&
+                    <div className=' rounded mt-2 underline' onClick={() => {handleStart(deck, true)}}>
                         Or continue last game
                     </div>
+                    }
                 </div>
 
             </div>
