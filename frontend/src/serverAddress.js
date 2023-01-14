@@ -5,6 +5,6 @@ const address = {
 }
 
 
-if (online) address.address = "asdasd"
+if (online) address.address = "https://drinkoo.onrender.com"
 
 module.exports = address
