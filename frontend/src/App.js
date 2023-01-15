@@ -3,7 +3,7 @@ import axios from "axios"
 import CardList from "./Components/CardList";
 import Game from "./Components/Game";
 import DeckList from "./DeckList/DeckList";
-import serverAdress, { address } from "./serverAddress"
+import  { address } from "./serverAddress.js"
 import generateCards from "./methods/generateCards";
 
 
@@ -69,7 +69,7 @@ function App() {
 
     const handleFetchDecks = () => {
         console.log("asdasdas")
-        axios.get(serverAdress.address + "/deck/fetch")
+        axios.get(address + "/deck/fetch")
         .then((response) => {
            
             if(response.data.success){
@@ -86,7 +86,7 @@ function App() {
 
     const handleStart = (deck, cont) => {
 
-        
+
         if(cont){
             setPage("Game")
             localStorage.setItem("CurrentPage", "Game")

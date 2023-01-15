@@ -8,3 +8,5 @@ i have all my shit on kanbanflow, and there is also links to the gptchat chichan
 
 make sure to put in the ip trying to access the server in mongodb atlas.
 
+
+put dev.json with {"dev":true} in src/ folder, gitignore this., check serverAddress.js

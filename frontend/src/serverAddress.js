@@ -1,10 +1,23 @@
-let online = true
 
-const address = {
-    address: "http://localhost:3001"
-}
+import dev from "./dev.json"
 
 
-if (online) address.address = "https://drinkoo.onrender.com"
 
-module.exports = address
+let add = ""
+
+//put dev.json with {"dev":true} in src/ folder, gitignored.
+if(dev.dev){
+    add = "http://localhost:3001"
+}else{
+    add = "https://drinkoo.onrender.com"
+}    
+
+export const address = add
+
+
+
+
+
+
+
+
