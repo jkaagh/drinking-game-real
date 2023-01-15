@@ -70,3 +70,7 @@ background: linear-gradient(128deg, rgba(244,241,249,1) 67%, rgba(234,227,238,1)
  
 }
 
+
+.screenheighttest{
+    height: 50vh;
+}
