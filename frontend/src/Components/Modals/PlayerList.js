@@ -64,7 +64,14 @@ export default function PlayerList() {
                 type="text"
                 value={newPlayer}
                 onChange={handleNewPlayerChange}
-                onKeyPress={handleNewPlayerSubmit}
+                // onKeyPress={handleNewPlayerSubmit}
+                onFocus={(e) => {
+                    e.target.onkeydown = (e) => {
+                        if (e.code === "Enter" || e.key === "Enter") {
+                            handleNewPlayerSubmit();
+                        }
+                    }
+                }}
                 className="standardInput shadow-md bg-slate-100 mb-8 w-full"
                 />
                 {/* <button onClick={handleNewPlayerSubmit}>Add</button> */}
