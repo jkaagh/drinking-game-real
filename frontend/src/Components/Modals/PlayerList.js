@@ -38,8 +38,10 @@ export default function PlayerList() {
         setNewPlayer(e.target.value);
     };
 
-    const handleNewPlayerSubmit = () => {
-        
+    const handleNewPlayerSubmit = (e) => {
+
+        e.preventDefault() 
+        e.target.value = ""
         setPlayers([...players, newPlayer]);
         setNewPlayer("");
         
@@ -59,7 +61,7 @@ export default function PlayerList() {
                 </div>
             ))}
             <div>
-                <input
+                {/* <input
                 placeholder='Add player'
                 type="text"
                 value={newPlayer}
@@ -73,8 +75,34 @@ export default function PlayerList() {
                     }
                 }}
                 className="standardInput shadow-md bg-slate-100 mb-8 w-full"
-                />
-                {/* <button onClick={handleNewPlayerSubmit}>Add</button> */}
+                /> */}
+                <form onSubmit={handleNewPlayerSubmit}>
+
+                    <input
+                                
+                                className="standardInput shadow-md bg-slate-100 mb-8 w-full"
+                                placeholder='Add player'
+                                onChange={handleNewPlayerChange}
+                                onKeyDown={(e) => {
+                                    if (e.code === "Enter" || e.key === "Enter") {
+                                    e.target.value = ""
+                                }
+                                }}
+                                // onSubmitEditing={(e) => {
+                                //     e.preventDefault()
+                                //     handleNewPlayerSubmit()
+                                // }}
+                                // onFocus={(e) => {
+                                //     e.target.onkeydown = (e) => {
+                                //         if (e.code === "Enter" || e.key === "Enter") {
+                                //             handleNewPlayerSubmit();
+                                //         }
+                                //     }
+                                // }}
+
+                            />
+                </form>
+
             </div>
         </div>
     );
