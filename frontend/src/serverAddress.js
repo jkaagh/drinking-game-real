@@ -13,11 +13,3 @@ let add = "https://drinkoo.onrender.com"
 // }    
 
 export const address = add
-
-
-
-
-
-
-
-
