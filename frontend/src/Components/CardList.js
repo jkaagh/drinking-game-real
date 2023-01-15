@@ -168,11 +168,19 @@ export default function CardList(props) {
                             onChange={(e) => {
                                 setInputField(e.target.value)
                             }}
-                            onKeyDown={(e) => {
-                                if (e.keyCode === 13) {
-                                    handleSubmit()
-                                    e.target.value = ""
+                            // onKeyDown={(e) => {
+                            //     if (e.keyCode === 13 && e.infocus) {
+                            //         handleSubmit()
+                            //         e.target.value = ""
 
+                            //     }
+                            // }}
+                            onFocus={(e) => {
+                                e.target.onkeydown = (e) => {
+                                    if (e.code === "Enter" || e.key === "Enter") {
+                                        handleSubmit();
+                                        e.target.value = "";
+                                    }
                                 }
                             }}
 
