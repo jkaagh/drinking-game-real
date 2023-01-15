@@ -38,11 +38,11 @@ export default function PlayerList() {
         setNewPlayer(e.target.value);
     };
 
-    const handleNewPlayerSubmit = (e) => {
-        if (e.key === "Enter" || e.type === "click") {
+    const handleNewPlayerSubmit = () => {
+        
         setPlayers([...players, newPlayer]);
         setNewPlayer("");
-        }
+        
     };
 
     return (
