@@ -16,11 +16,11 @@ Our randomizing algorithm ensures fair game play by picking players at random bu
 
 For example, the prompt:
 
-´´´{p1} cannot come up with a good example, so {p2} suggests writing this. {p1} is now happy.´´´
+> {p1} cannot come up with a good example, so {p2} suggests writing this. {p1} is now happy.
 
 Will turn into:
 
-´´´Johannes cannot come up with a good example, so Magnus suggests writing this. Johannes is now happy.```
+´Johannes cannot come up with a good example, so Magnus suggests writing this. Johannes is now happy.`
 
 You can have up to 50 {p}'s, and as many players as you want.
 To see how it works, check out the code here: /frontend/src/methods/generateCards.js
