@@ -4,6 +4,8 @@
 ### Introduction
 Are you tired of playing the same old drinking games? Want to spice things up with custom cards and player lists? Look no further than Drinkoo! 
 
+- Currently not for public use, see the Try It Out section.
+
 ### Features
 With Drinkoo, you have the ability to fully customize your game experience. Create your own decks and cards, with the option to select multiple decks to use together. This allows for endless possibilities and a new game experience with each play through.
 
@@ -20,13 +22,15 @@ For example, the prompt:
 
 Will turn into:
 
-<Johannes cannot come up with a good example, so Magnus suggests writing this. Johannes is now happy.`
+> Johannes cannot come up with a good example, so Magnus suggests writing this. Johannes is now happy.
 
 You can have up to 50 {p}'s, and as many players as you want.
 To see how it works, check out the code here: /frontend/src/methods/generateCards.js
 
 ### Try it out
 Try it out for yourself by visiting https://drinkoo.onrender.com and login with the password 'linkedindemo' to test creating your own decks or use what others have created.
+
+Please note the app is not ready for public use, contact me if you want an account.
 
 ### Technicalities
 Please note that the login system is only temporary and will be replaced with a normal user authentication system once the app is developed for public use. Features such as a deck browser with sharing, rating, and copying will also be added.
