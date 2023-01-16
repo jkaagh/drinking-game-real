@@ -35,4 +35,6 @@ Please note the app is not ready for public use, contact me if you want an accou
 ### Technicalities
 Please note that the login system is only temporary and will be replaced with a normal user authentication system once the app is developed for public use. Features such as a deck browser with sharing, rating, and copying will also be added.
 
-Frontend created with React and TailwindCSS. Backend created with Node.js, Express, MongoDB. Hosted on https://render.com.
+- Frontend created with React and TailwindCSS. 
+- Backend created with Node.js, Express, MongoDB. Hosted on https://render.com. 
+- Many hours of work and life expectancy spared with OpenAI ChatGPT.
