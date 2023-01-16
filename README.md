@@ -20,7 +20,7 @@ For example, the prompt:
 
 Will turn into:
 
-´Johannes cannot come up with a good example, so Magnus suggests writing this. Johannes is now happy.`
+<Johannes cannot come up with a good example, so Magnus suggests writing this. Johannes is now happy.`
 
 You can have up to 50 {p}'s, and as many players as you want.
 To see how it works, check out the code here: /frontend/src/methods/generateCards.js
