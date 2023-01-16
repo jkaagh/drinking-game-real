@@ -4,7 +4,7 @@
 ### Introduction
 Are you tired of playing the same old drinking games? Want to spice things up with custom cards and player lists? Look no further than Drinkoo! 
 
-- Currently not for public use, see the Try It Out section.
+- Currently not for public use, see the Try it out section.
 
 ### Features
 With Drinkoo, you have the ability to fully customize your game experience. Create your own decks and cards, with the option to select multiple decks to use together. This allows for endless possibilities and a new game experience with each play through.
