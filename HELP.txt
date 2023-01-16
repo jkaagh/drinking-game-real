@@ -11,4 +11,4 @@ make sure to put in the ip trying to access the server in mongodb atlas.
 
 put dev.json with {"dev":true} in src/ folder, gitignore this., check serverAddress.js
 
-create db.env variable in /backend, check kanbanflow.
+create .env variable in /backend, check kanbanflow.
