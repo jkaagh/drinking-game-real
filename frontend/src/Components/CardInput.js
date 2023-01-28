@@ -40,18 +40,22 @@ export default function CardInput(props) {
 
     return (
        
-        <form className='cardListBox flex justify-between'>
+        <form className='cardListBox flex justify-between py-1'>
+
+            <div className='flex items-center text-xs text-black text-opacity-75 font-mono mr-2'>
+                #{props.number}
+            </div>
             <TextareaAutosize value={input} onChange={(e) => {
                 setInput(e.target.value)
                 props.handleUpdate(props.data._id, e.target.value)
             }}
-            className="py-3 px-4 w-4/5 outline-none resize-none overflow-auto h-auto " 
+            className="py-3 px-1 w-4/5 outline-none resize-none overflow-auto h-auto " 
             />
            
 
             {
                 props.canEdit &&
-                <div className='py-3 px-4 flex' onClick={() => {
+                <div className='py-3 px-4 flex items-center' onClick={() => {
                     handleDelete()
                 }}>
                     <span className={buttonClasses}>{buttonText}</span>

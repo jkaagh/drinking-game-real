@@ -10,11 +10,17 @@ import Modal from './Modal'
 import PlayerList from './Modals/PlayerList'
 import { AccountContext, StartGameContext } from '../App'
 
+import { FixedSizeList as List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
+
+
 
 export default function CardList(props) {
 
     const [inputField, setInputField] = useState("")
-    const [deck, setDeck] = useState(undefined)
+    const [deck, setDeck] = useState([])
+
+
     const [redirect, setRedirect] = useState(false)
     const [canEdit, setCanEdit] = useState(false)
 
@@ -59,15 +65,19 @@ export default function CardList(props) {
 
 
 
-    const handleSubmit = () => {
-        axios.post(address + "/card/create/", { prompt: inputField, password: props.account.password, id: localStorage.getItem("selectedDeck") })
+    const handleSubmit = (e) => {
+        let ogvalue = e.target.value
+        e.target.value="Loading..."
+        axios.post(address + "/card/create/", { prompt: ogvalue, password: props.account.password, id: localStorage.getItem("selectedDeck") })
             .then((response) => {
                 if (response.data.success == false) {
+                    e.target.value = ogvalue
                     alert("Error, card not added.")
-                    return
+                    console.log(response)
+                }else{
+                    setInputField("")
+                    handleFetchCards()
                 }
-            handleFetchCards()
-            setInputField("")
         })
     }
 
@@ -101,7 +111,7 @@ export default function CardList(props) {
     const handlePButton = (p, inputField, setInputField) => {
         const input = inputRef.current;
         const caretPos = input.selectionStart;
-        const updatedInputField = inputField.slice(0, caretPos) + " {p" + p + "} " + inputField.slice(caretPos);
+        const updatedInputField = inputField.slice(0, caretPos) + "{p" + p + "}" + inputField.slice(caretPos);
 
         setInputField(updatedInputField);
         inputRef.current.value = updatedInputField
@@ -111,8 +121,7 @@ export default function CardList(props) {
         console.log("it ran");
     };
 
-
-
+    
 
 
     return (
@@ -141,12 +150,35 @@ export default function CardList(props) {
 
             </Modal>
 
-            <div className=' shadow-md h-5/6  flex flex-col gap-2 p-2 overflow-scroll mt-1' id="scrollDiv">
+            <div className=' shadow-md h-5/6  flex flex-col p-2 overflow-scroll mt-1' id="scrollDiv">
+                
 
                 {
-                    deck !== undefined ? deck.map((card, index) => {
-                        return <CardInput key={index} canEdit={canEdit} account={props.account} data={card} handleDelete={handleDelete} handleUpdate={handleUpdate} />
+                    deck !== undefined ? 
+       
+
+
+
+                //     <AutoSizer>
+                //     {({ height, width }) => (
+                //       <List
+                //         className="List"
+                //         height={height}
+                //         itemCount={1000}
+                //         itemSize={35}
+                //         width={width}
+                //       >
+                //         <div>
+                            
+                //                 asdasd
+                //             </div>
+                //       </List>
+                //     )}
+                //   </AutoSizer>
+                    deck.map((card, index) => {
+                        return <CardInput key={card._id} canEdit={canEdit} account={props.account} data={card} handleDelete={handleDelete} handleUpdate={handleUpdate} number={index+1} />
                     })
+
 
                         :
 
@@ -156,30 +188,25 @@ export default function CardList(props) {
 
 
                 }
+                
 
                 {/* Input field. Show if allowed */}
                 {
                     canEdit &&
                     <>
-                        <input
+                        <input  
                             ref={inputRef}
                             className='standardInput shadow-md bg-slate-100 !mb-2 '
                             placeholder='Add new card'
+                            value={inputField}
                             onChange={(e) => {
                                 setInputField(e.target.value)
                             }}
-                            // onKeyDown={(e) => {
-                            //     if (e.keyCode === 13 && e.infocus) {
-                            //         handleSubmit()
-                            //         e.target.value = ""
 
-                            //     }
-                            // }}
                             onFocus={(e) => {
                                 e.target.onkeydown = (e) => {
                                     if (e.code === "Enter" || e.key === "Enter") {
-                                        handleSubmit();
-                                        e.target.value = "";
+                                        handleSubmit(e);
                                     }
                                 }
                             }}
