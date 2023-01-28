@@ -196,7 +196,7 @@ export default function CardList(props) {
                     <>
                         <input  
                             ref={inputRef}
-                            className='standardInput shadow-md bg-slate-100 !mb-2 '
+                            className='standardInput shadow-md bg-slate-100 !mb-2 mt-2'
                             placeholder='Add new card'
                             value={inputField}
                             onChange={(e) => {
